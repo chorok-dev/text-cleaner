@@ -317,10 +317,10 @@ text =
 function createDownload() {
 
     const blob =
-        new Blob(
-            [resultText],
-            { type:"text/plain" }
-        );
+    new Blob(
+        ["\uFEFF", resultText],
+        { type:"text/plain;charset=utf-8" }
+    );
 
 
     const url =
@@ -406,9 +406,9 @@ function downloadParts(files) {
         (content, index) => {
 
             zip.file(
-                `정리파일_${index + 1}.txt`,
-                content
-            );
+    `정리파일_${index + 1}.txt`,
+    "\uFEFF" + content
+);
 
         });
 
