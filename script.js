@@ -107,21 +107,38 @@ function cleanText(text) {
 
 
 
-   // =====================
-// 직접 입력 문구 포함 줄 삭제
+// =====================
+// 직접 입력 문구 삭제
 // =====================
 
 const deleteText =
     document.getElementById("deleteText").value;
 
+const deleteWholeLine =
+    document.getElementById("deleteWholeLine").checked;
+
 
 if (deleteText !== "") {
 
-    text =
-        text
-            .split("\n")
-            .filter(line => !line.includes(deleteText))
-            .join("\n");
+    if (deleteWholeLine) {
+
+        // 문구가 들어있는 줄 전체 삭제
+        text =
+            text
+                .split("\n")
+                .filter(line => !line.includes(deleteText))
+                .join("\n");
+
+    } else {
+
+        // 문구만 삭제
+        text =
+            text.replaceAll(
+                deleteText,
+                ""
+            );
+
+    }
 
 }
 
