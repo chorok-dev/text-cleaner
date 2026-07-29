@@ -107,23 +107,23 @@ function cleanText(text) {
 
 
 
-    // =====================
-    // 직접 입력 문구 삭제
-    // =====================
+   // =====================
+// 직접 입력 문구 포함 줄 삭제
+// =====================
 
-    const deleteText =
-        document.getElementById("deleteText").value;
+const deleteText =
+    document.getElementById("deleteText").value;
 
 
-    if (deleteText !== "") {
+if (deleteText !== "") {
 
-        text =
-            text.replaceAll(
-                deleteText,
-                ""
-            );
+    text =
+        text
+            .split("\n")
+            .filter(line => !line.includes(deleteText))
+            .join("\n");
 
-    }
+}
 
 
 
