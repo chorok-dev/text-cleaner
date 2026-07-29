@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>텍스트 정리기</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>텍스트 정리기</h1>
+
+        <input type="file" id="fileInput" accept=".txt">
+
+        <h3>삭제 옵션</h3>
+
+
+        <label>
+            <input type="checkbox" id="deleteDate">
+            날짜 및 시간 삭제
+        </label>
+
+        <label>
+            <input type="checkbox" id="keepTime">
+            날짜만 삭제
+        </label>
+
+        <label>
+            <input type="checkbox" id="deleteImageCode">
+            이미지 코드 삭제 (.png)
+        </label>
+
+        <label>
+            <input type="checkbox" id="deletePhotoText">
+            사진 읽지 않음 삭제
+        </label>
+
+        <label>
+            <input type="checkbox" id="removeEmpty">
+            빈 줄 삭제
+        </label>
+
+        <label>
+            <input type="checkbox" id="replaceEmptyName">
+            빈 이름 사용자 변경
+        </label>
+
+        <input type="text" id="emptyName" value="공백" placeholder="변경할 이름">
+
+        <br>
+
+        <h3>삭제할 문구</h3>
+        <input type="text" id="deleteText" placeholder="삭제할 문구 입력">
+
+        <p id="status"></p>
+
+        <br>
+
+        <h3>문구 변경</h3>
+
+        <input type="text" id="replaceFrom" placeholder="바꿀 문구">
+
+        <input type="text" id="replaceTo" placeholder="변경할 문구">
+
+        <br><br>
+
+        <h3>파일 분할</h3>
+
+        <label>
+            <input type="checkbox" id="splitFile">
+            파일 분할하기
+        </label>
+
+        <br>
+
+        <input type="number" id="splitLines" value="30000" placeholder="몇 줄마다 나눌지"><span>줄마다</span>
+
+        <br>
+        <br>
+        <br>
+
+        <button id="makeSampleButton">
+            앞 1000줄 샘플 파일 만들기
+        </button>
+        <br>
+        <button id="runButton">결과 파일 다운로드</button>
+    </div>
+
+
+
+    <script src="script.js"></script>
+
+
+</body>
+
+</html>
