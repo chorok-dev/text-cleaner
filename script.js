@@ -189,7 +189,7 @@ if (deleteText !== "") {
 
 // 사진 변경
 
-    const replacePhotoCount =
+const replacePhotoCount =
     document.getElementById("replacePhotoCount").checked;
 
 console.log("replacePhotoCount:", replacePhotoCount);
@@ -213,50 +213,62 @@ if (replacePhotoCount) {
     let count = 0;
 
     function flush() {
-        console.log("flush() 호출, count =", count);
 
         if (count > 0) {
-            result.push(`<사진 ${count}장>`);
             console.log(`<사진 ${count}장> 추가`);
+            result.push(`<사진 ${count}장>`);
             count = 0;
         }
     }
 
     for (const line of lines) {
 
-        console.log("----------------");
-        console.log("현재 줄:", line);
+        const trimmed = line.trim();
 
-        const isImage = imagePattern.test(line.trim());
-        const isPhoto = photoPattern.test(line.trim());
+        // 이미지나 사진 관련 줄만 로그 출력
+        if (
+            trimmed.includes("png") ||
+            trimmed.includes("jpg") ||
+            trimmed.includes("jpeg") ||
+            trimmed.includes("<사진")
+        ) {
+            console.log("==========");
+            console.log("현재 줄:", trimmed);
+        }
 
-        console.log("이미지?", isImage);
-        console.log("사진 읽지 않음?", isPhoto);
+        const isImage = imagePattern.test(trimmed);
+        const isPhoto = photoPattern.test(trimmed);
+
+        if (
+            trimmed.includes("png") ||
+            trimmed.includes("jpg") ||
+            trimmed.includes("jpeg") ||
+            trimmed.includes("<사진")
+        ) {
+            console.log("이미지?", isImage);
+            console.log("사진?", isPhoto);
+        }
 
         if (isImage || isPhoto) {
 
             count++;
-            console.log("사진 카운트 증가:", count);
+
+            console.log("카운트:", count);
 
         } else {
 
-            console.log("일반 텍스트 -> flush()");
             flush();
-
             result.push(line);
-            console.log("텍스트 추가:", line);
         }
     }
 
-    console.log("반복문 종료");
     flush();
 
     text = result.join("\n");
 
-    console.log("최종 결과");
+    console.log("=== 최종 결과 ===");
     console.log(text);
 }
-
 
 // 빈 이름 사용자 변경
 
