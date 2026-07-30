@@ -198,7 +198,7 @@ if (replacePhotoCount) {
 
     // 긴 해시 형태의 이미지 파일명
     const imagePattern =
-        /\b[a-f0-9]{50,}\.(png|jpg|jpeg|gif)\b/i;
+    /\b[a-f0-9]{50,}\.(png|jpg|jpeg|gif|webp|bmp|tiff|tif|heic|heif|avif|svg|ico)\b/i;
 
     // <사진 읽지 않음>
     const photoPattern =
@@ -255,7 +255,7 @@ if (replaceVideo) {
 
     // 동영상 파일명
     const videoPattern =
-        /\b[a-f0-9]{50,}\.(mp4|mov|avi|mkv|webm)\b/gi;
+        /\b[a-f0-9]{50,}\.(mp4|mov|avi|mkv|webm|m4v|3gp|wmv|flv)\b/gi;
 
     // 동영상 읽지 않음
     const videoTextPattern =
