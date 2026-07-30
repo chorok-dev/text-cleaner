@@ -225,75 +225,59 @@ if (replacePhotoCount) {
     // 연속된 사진 개수
     let count = 0;
 
+    // 마지막으로 말한 사람
+    let lastSpeaker = "";
+
     // 사진 묶음을 결과에 추가하는 함수
-    function flush() {
+   function flush() {
 
-        // 사진이 하나 이상 모여 있다면
-        if (count > 0) {
+    if (count > 0) {
 
-            // 로그 출력
-            console.log(`<사진 ${count}장> 추가`);
-
-            // 결과 배열에 추가
+        if (lastSpeaker !== "") {
+            result.push(`${lastSpeaker} : <사진 ${count}장>`);
+        } else {
             result.push(`<사진 ${count}장>`);
-
-            // 카운트 초기화
-            count = 0;
         }
+
+        count = 0;
     }
+}
 
     // 한 줄씩 검사
-    for (const line of lines) {
+for (const line of lines) {
 
-        // 앞뒤 공백 제거
-        const trimmed = line.trim();
+    // 앞뒤 공백 제거
+    const trimmed = line.trim();
 
-        // png/jpg/jpeg 또는 <사진>이 들어있는 줄만 로그 출력
-        if (
-            trimmed.includes("png") ||
-            trimmed.includes("jpg") ||
-            trimmed.includes("jpeg") ||
-            trimmed.includes("<사진")
-        ) {
-            console.log("==========");
-            console.log("현재 줄:", trimmed);
-        }
+    // 현재 줄에서 화자 이름 추출
+    const speakerMatch = line.match(
+        /^\d{4}년\s\d{1,2}월\s\d{1,2}일\s(?:오전|오후)\s\d{1,2}:\d{2},\s*([^:]+)\s*:/
+    );
 
-        // 현재 줄이 이미지 파일명인지 검사
-        const isImage = imagePattern.test(trimmed);
-
-        // 현재 줄이 "<사진 읽지 않음>"인지 검사
-        const isPhoto = photoPattern.test(trimmed);
-
-        // 이미지 관련 줄이라면 검사 결과 출력
-        if (
-            trimmed.includes("png") ||
-            trimmed.includes("jpg") ||
-            trimmed.includes("jpeg") ||
-            trimmed.includes("<사진")
-        ) {
-            console.log("이미지?", isImage);
-            console.log("사진?", isPhoto);
-        }
-
-        // 이미지이거나 <사진 읽지 않음>이라면
-        if (isImage || isPhoto) {
-
-            // 사진 개수 증가
-            count++;
-
-            console.log("카운트:", count);
-
-        } else {
-
-            // 일반 텍스트를 만나면
-            // 지금까지 모인 사진을 <사진 n장>으로 저장
-            flush();
-
-            // 일반 텍스트는 그대로 결과에 추가
-            result.push(line);
-        }
+    if (speakerMatch) {
+        lastSpeaker = speakerMatch[1].trim();
     }
+
+    // 현재 줄이 이미지인지 검사
+    const isImage = imagePattern.test(trimmed);
+
+    // 현재 줄이 <사진 읽지 않음>인지 검사
+    const isPhoto = photoPattern.test(trimmed);
+
+    // 이미지 또는 사진이면 카운트만 증가
+    if (isImage || isPhoto) {
+
+        count++;
+
+    } else {
+
+        // 일반 텍스트를 만나면 사진 묶음 출력
+        flush();
+
+        // 일반 텍스트는 그대로 저장
+        result.push(line);
+    }
+}
 
     // 마지막 줄이 사진으로 끝나는 경우를 처리
     flush();
