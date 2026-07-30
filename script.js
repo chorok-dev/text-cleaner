@@ -331,13 +331,13 @@ text =
     // 허용된 이름 없는 줄 삭제
     // =====================
 
-    text =
-        text
-            .split("\n")
-            .filter(line =>
-                /(초록|레곤|공백| )\s*:/.test(line)
-            )
-            .join("\n");
+    // text =
+    //     text
+    //         .split("\n")
+    //         .filter(line =>
+    //             /(초록|레곤|공백| )\s*:/.test(line)
+    //         )
+    //         .join("\n");
 
 
 
