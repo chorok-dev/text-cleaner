@@ -187,109 +187,63 @@ if (deleteText !== "") {
 
     }
 
-    // =====================
-    // 사진 일괄 변경
-    // =====================
+// =====================
+// 사진 일괄 변경
+// =====================
 
-// 체크박스(replacePhotoCount)가 체크되어 있는지 확인
 const replacePhotoCount =
     document.getElementById("replacePhotoCount").checked;
 
-// 체크 여부 출력
-console.log("replacePhotoCount:", replacePhotoCount);
-
-// 체크되어 있을 때만 실행
 if (replacePhotoCount) {
 
-    // 기능 시작 로그
-    console.log("사진 변환 기능 시작");
-
-    // 긴 해시 형태의 이미지 파일명을 찾는 정규식
-    // 예: 9ab38c0...f2.png
+    // 긴 해시 형태의 이미지 파일명
     const imagePattern =
         /\b[a-f0-9]{50,}\.(png|jpg|jpeg)\b/i;
 
-    // "<사진 읽지 않음>"이 들어있는 줄을 찾는 정규식
+    // <사진 읽지 않음>
     const photoPattern =
         /^.*<사진 읽지 않음>.*$/;
 
-    // 텍스트를 줄 단위 배열로 분리
     const lines = text.split("\n");
 
-    // 전체 줄 개수 출력
-    console.log("총 줄 수:", lines.length);
-
-    // 최종 결과를 저장할 배열
     const result = [];
 
-    // 연속된 사진 개수
     let count = 0;
 
-    // 마지막으로 말한 사람
-    let lastSpeaker = "";
+    function flush() {
 
-    // 사진 묶음을 결과에 추가하는 함수
-   function flush() {
-
-    if (count > 0) {
-
-        if (lastSpeaker !== "") {
-            result.push(`${lastSpeaker} : <사진 ${count}장>`);
-        } else {
+        if (count > 0) {
             result.push(`<사진 ${count}장>`);
+            count = 0;
         }
 
-        count = 0;
-    }
-}
-
-    // 한 줄씩 검사
-for (const line of lines) {
-
-    // 앞뒤 공백 제거
-    const trimmed = line.trim();
-
-    // 현재 줄에서 화자 이름 추출
-    const speakerMatch = line.match(
-        /^\d{4}년\s\d{1,2}월\s\d{1,2}일\s(?:오전|오후)\s\d{1,2}:\d{2},\s*([^:]+)\s*:/
-    );
-
-    if (speakerMatch) {
-        lastSpeaker = speakerMatch[1].trim();
     }
 
-    // 현재 줄이 이미지인지 검사
-    const isImage = imagePattern.test(trimmed);
+    for (const line of lines) {
 
-    // 현재 줄이 <사진 읽지 않음>인지 검사
-    const isPhoto = photoPattern.test(trimmed);
+        const trimmed = line.trim();
 
-    // 이미지 또는 사진이면 카운트만 증가
-    if (isImage || isPhoto) {
+        const isImage = imagePattern.test(trimmed);
+        const isPhoto = photoPattern.test(trimmed);
 
-        count++;
+        if (isImage || isPhoto) {
 
-    } else {
+            count++;
 
-        // 일반 텍스트를 만나면 사진 묶음 출력
-        flush();
+        } else {
 
-        // 일반 텍스트는 그대로 저장
-        result.push(line);
+            flush();
+            result.push(line);
+
+        }
     }
-}
 
-    // 마지막 줄이 사진으로 끝나는 경우를 처리
+    // 마지막이 사진으로 끝나는 경우 처리
     flush();
 
-    // 배열을 다시 문자열로 합침
     text = result.join("\n");
-
-    // 최종 결과 출력
-    console.log("=== 최종 결과 ===");
-    console.log(text);
 }
-
+    
 // 빈 이름 사용자 변경
 
 const replaceEmptyName =
