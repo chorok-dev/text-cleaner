@@ -198,7 +198,7 @@ if (replacePhotoCount) {
 
     // 긴 해시 형태의 이미지 파일명
     const imagePattern =
-        /\b[a-f0-9]{50,}\.(png|jpg|jpeg)\b/i;
+        /\b[a-f0-9]{50,}\.(png|jpg|jpeg|gif)\b/i;
 
     // <사진 읽지 않음>
     const photoPattern =
@@ -242,6 +242,37 @@ if (replacePhotoCount) {
     flush();
 
     text = result.join("\n");
+}
+
+// =====================
+// 동영상 일괄 변경
+// =====================
+
+const replaceVideo =
+    document.getElementById("replaceVideo").checked;
+
+if (replaceVideo) {
+
+    // 동영상 파일명
+    const videoPattern =
+        /\b[a-f0-9]{50,}\.(mp4|mov|avi|mkv|webm)\b/gi;
+
+    // 동영상 읽지 않음
+    const videoTextPattern =
+        /^.*<동영상 읽지 않음>.*$/gm;
+
+    // 동영상 파일명을 <동영상>으로 변경
+    text = text.replace(
+        videoPattern,
+        "<동영상>"
+    );
+
+    // <동영상 읽지 않음>을 <동영상>으로 변경
+    text = text.replace(
+        videoTextPattern,
+        "<동영상>"
+    );
+
 }
     
 // 빈 이름 사용자 변경
