@@ -190,47 +190,50 @@ if (deleteText !== "") {
 
 
 
-    // =====================
-    // 이미지 코드 삭제
-    // =====================
+// =====================
+// 연속된 이미지를 <사진 n장>으로 변환
+// =====================
 
-    const deleteImageCode =
-        document.getElementById("deleteImageCode").checked;
+const replacePhotoCount =
+    document.getElementById("deletePhotoText").checked;
 
+if (replacePhotoCount) {
 
-    if (deleteImageCode) {
+    const imagePattern =
+        /\b[a-f0-9]{50,}\.(png|jpg|jpeg)\b/i;
 
-const imagePattern =
-    /\b[a-f0-9]{50,}\.(png|jpg|jpeg)\b/gi;
+    const photoPattern =
+        /^.*<사진 읽지 않음>.*$/;
 
+    const lines = text.split("\n");
+    const result = [];
 
-        text =
-            text.replace(
-                imagePattern,
-                ""
-            );
+    let count = 0;
 
+    function flush() {
+        if (count > 0) {
+            result.push(`<사진 ${count}장>`);
+            count = 0;
+        }
     }
 
+    for (const line of lines) {
 
-
-    // =====================
-    // 사진 읽지 않음 삭제
-    // =====================
-
-    const deletePhotoText =
-        document.getElementById("deletePhotoText").checked;
-
-
-    if (deletePhotoText) {
-
-        text =
-            text.replace(
-                /^.*<사진 읽지 않음>.*$/gm,
-                ""
-            );
-
+        if (
+            imagePattern.test(line.trim()) ||
+            photoPattern.test(line.trim())
+        ) {
+            count++;
+        } else {
+            flush();
+            result.push(line);
+        }
     }
+
+    flush();
+
+    text = result.join("\n");
+}
 
 
 // 빈 이름 사용자 변경
