@@ -187,13 +187,16 @@ if (deleteText !== "") {
 
     }
 
+// 사진 변경
 
-
-
-const replacePhotoCount =
+    const replacePhotoCount =
     document.getElementById("replacePhotoCount").checked;
 
+console.log("replacePhotoCount:", replacePhotoCount);
+
 if (replacePhotoCount) {
+
+    console.log("사진 변환 기능 시작");
 
     const imagePattern =
         /\b[a-f0-9]{50,}\.(png|jpg|jpeg)\b/i;
@@ -202,32 +205,56 @@ if (replacePhotoCount) {
         /^.*<사진 읽지 않음>.*$/;
 
     const lines = text.split("\n");
+
+    console.log("총 줄 수:", lines.length);
+
     const result = [];
 
     let count = 0;
 
     function flush() {
+        console.log("flush() 호출, count =", count);
+
         if (count > 0) {
             result.push(`<사진 ${count}장>`);
+            console.log(`<사진 ${count}장> 추가`);
             count = 0;
         }
     }
 
     for (const line of lines) {
-        if (
-            imagePattern.test(line.trim()) ||
-            photoPattern.test(line.trim())
-        ) {
+
+        console.log("----------------");
+        console.log("현재 줄:", line);
+
+        const isImage = imagePattern.test(line.trim());
+        const isPhoto = photoPattern.test(line.trim());
+
+        console.log("이미지?", isImage);
+        console.log("사진 읽지 않음?", isPhoto);
+
+        if (isImage || isPhoto) {
+
             count++;
+            console.log("사진 카운트 증가:", count);
+
         } else {
+
+            console.log("일반 텍스트 -> flush()");
             flush();
+
             result.push(line);
+            console.log("텍스트 추가:", line);
         }
     }
 
+    console.log("반복문 종료");
     flush();
 
     text = result.join("\n");
+
+    console.log("최종 결과");
+    console.log(text);
 }
 
 
