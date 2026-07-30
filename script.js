@@ -187,45 +187,68 @@ if (deleteText !== "") {
 
     }
 
-// 사진 변경
+    // =====================
+    // 사진 일괄 변경
+    // =====================
 
+// 체크박스(replacePhotoCount)가 체크되어 있는지 확인
 const replacePhotoCount =
     document.getElementById("replacePhotoCount").checked;
 
+// 체크 여부 출력
 console.log("replacePhotoCount:", replacePhotoCount);
 
+// 체크되어 있을 때만 실행
 if (replacePhotoCount) {
 
+    // 기능 시작 로그
     console.log("사진 변환 기능 시작");
 
+    // 긴 해시 형태의 이미지 파일명을 찾는 정규식
+    // 예: 9ab38c0...f2.png
     const imagePattern =
         /\b[a-f0-9]{50,}\.(png|jpg|jpeg)\b/i;
 
+    // "<사진 읽지 않음>"이 들어있는 줄을 찾는 정규식
     const photoPattern =
         /^.*<사진 읽지 않음>.*$/;
 
+    // 텍스트를 줄 단위 배열로 분리
     const lines = text.split("\n");
 
+    // 전체 줄 개수 출력
     console.log("총 줄 수:", lines.length);
 
+    // 최종 결과를 저장할 배열
     const result = [];
 
+    // 연속된 사진 개수
     let count = 0;
 
+    // 사진 묶음을 결과에 추가하는 함수
     function flush() {
 
+        // 사진이 하나 이상 모여 있다면
         if (count > 0) {
+
+            // 로그 출력
             console.log(`<사진 ${count}장> 추가`);
+
+            // 결과 배열에 추가
             result.push(`<사진 ${count}장>`);
+
+            // 카운트 초기화
             count = 0;
         }
     }
 
+    // 한 줄씩 검사
     for (const line of lines) {
 
+        // 앞뒤 공백 제거
         const trimmed = line.trim();
 
-        // 이미지나 사진 관련 줄만 로그 출력
+        // png/jpg/jpeg 또는 <사진>이 들어있는 줄만 로그 출력
         if (
             trimmed.includes("png") ||
             trimmed.includes("jpg") ||
@@ -236,9 +259,13 @@ if (replacePhotoCount) {
             console.log("현재 줄:", trimmed);
         }
 
+        // 현재 줄이 이미지 파일명인지 검사
         const isImage = imagePattern.test(trimmed);
+
+        // 현재 줄이 "<사진 읽지 않음>"인지 검사
         const isPhoto = photoPattern.test(trimmed);
 
+        // 이미지 관련 줄이라면 검사 결과 출력
         if (
             trimmed.includes("png") ||
             trimmed.includes("jpg") ||
@@ -249,23 +276,32 @@ if (replacePhotoCount) {
             console.log("사진?", isPhoto);
         }
 
+        // 이미지이거나 <사진 읽지 않음>이라면
         if (isImage || isPhoto) {
 
+            // 사진 개수 증가
             count++;
 
             console.log("카운트:", count);
 
         } else {
 
+            // 일반 텍스트를 만나면
+            // 지금까지 모인 사진을 <사진 n장>으로 저장
             flush();
+
+            // 일반 텍스트는 그대로 결과에 추가
             result.push(line);
         }
     }
 
+    // 마지막 줄이 사진으로 끝나는 경우를 처리
     flush();
 
+    // 배열을 다시 문자열로 합침
     text = result.join("\n");
 
+    // 최종 결과 출력
     console.log("=== 최종 결과 ===");
     console.log(text);
 }
