@@ -190,12 +190,8 @@ if (deleteText !== "") {
 
 
 
-// =====================
-// 연속된 이미지를 <사진 n장>으로 변환
-// =====================
-
 const replacePhotoCount =
-    document.getElementById("deletePhotoText").checked;
+    document.getElementById("replacePhotoCount").checked;
 
 if (replacePhotoCount) {
 
@@ -218,7 +214,6 @@ if (replacePhotoCount) {
     }
 
     for (const line of lines) {
-
         if (
             imagePattern.test(line.trim()) ||
             photoPattern.test(line.trim())
