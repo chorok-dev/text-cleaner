@@ -73,6 +73,20 @@ document.getElementById("runButton")
 
 function cleanText(text) {
 
+    // 테스트
+
+    text
+    .split("\n")
+    .forEach(line => {
+
+        if (line.includes("2025년")) {
+
+            console.log(JSON.stringify(line));
+
+        }
+
+    });
+    
     // =====================
     // 숨은 문자 제거
     // =====================
