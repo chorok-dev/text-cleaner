@@ -556,8 +556,7 @@ document.getElementById("makeSampleButton")
         reader.onload = function (e) {
 
 
-            let text =
-                e.target.result;
+            const text = e.target.result.replace(/\r/g, "");
 
 
 
