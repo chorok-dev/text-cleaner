@@ -187,6 +187,23 @@ if (deleteText !== "") {
 
     }
 
+    // =====================
+// 날짜·시간만 있는 줄 삭제
+// =====================
+
+const deleteOnlyDateLine =
+    document.getElementById("deleteOnlyDateLine").checked;
+
+if (deleteOnlyDateLine) {
+
+    text =
+        text.replace(
+            /^\d{4}년\s\d{1,2}월\s\d{1,2}일\s(오전|오후)\s\d{1,2}:\d{2}\s*$/gm,
+            ""
+        );
+
+}
+
 // =====================
 // 사진 일괄 변경
 // =====================
