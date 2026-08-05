@@ -29,7 +29,7 @@ document.getElementById("runButton")
         reader.onload = function (e) {
 
             let text =
-                e.target.result;
+        e.target.result.replace(/\r/g, "");
 
 
             text = cleanText(text);
@@ -72,6 +72,13 @@ document.getElementById("runButton")
 // =====================
 
 function cleanText(text) {
+
+
+    // =====================
+    // 줄바꿈 문자 제거
+    // =====================
+
+    text = text.replace(/\r/g, "");
 
     // 테스트
 
@@ -556,13 +563,10 @@ document.getElementById("makeSampleButton")
         reader.onload = function (e) {
 
 
-            const text = e.target.result.replace(/\r/g, "");
+            let text = e.target.result.replace(/\r/g, "");
 
 
-
-            // 정리 적용
-            text =
-                cleanText(text);
+            text = cleanText(text);
 
 
 
